@@ -37,7 +37,7 @@
           label="序号"
           width="80"
         >
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{ (current - 1) * limit + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
@@ -110,14 +110,29 @@
     </div>
 
     <el-dialog
-      title="修改教师信息"
+      :title="title"
       :visible.sync="dialogVisible"
       width="30%"
       center
     >
       <el-form :model="dialogForm">
+        <el-form-item v-if="dialogForm.id" label="ID" label-width="120px">
+          <el-input v-model="dialogForm.id" disabled style="width: 300px" autocomplete="off" />
+        </el-form-item>
         <el-form-item label="教师名称" label-width="120px">
           <el-input v-model="dialogForm.name" style="width: 300px" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="教师头像" label-width="120px">
+          <el-upload
+            class="avatar-uploader"
+            action="http://localhost:8090/api/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
         </el-form-item>
         <el-form-item label="校区" label-width="120px">
           <el-select v-model="dialogForm.campus" placeholder="请选择校区" clearable>
@@ -177,6 +192,8 @@ export default {
   name: 'TeacherList',
   data() {
     return {
+      title: '修改教师信息',
+      imageUrl: '',
       dialogVisible: false,
       hidePage: false,
       current: 1,
@@ -221,13 +238,38 @@ export default {
         this.hidePage = true
       }
     },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+      this.dialogForm.avatar = res.data.picUrl
+    },
+    beforeAvatarUpload(file) {
+      const testMsg = file.name.substring(file.name.lastIndexOf('.') + 1)
+      const extension =
+        testMsg === 'jpg' ||
+        testMsg === 'JPG' ||
+        testMsg === 'png' ||
+        testMsg === 'PNG'
+      if (!extension) {
+        this.$message({
+          message: '上传图片只能是jpg / png 格式!',
+          type: 'error'
+        })
+        return false // 必须加上return false; 才能阻止
+      }
+      const isLt2M = file.size / 1024 / 1024 < 20
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
     search() {
       this.getAllTeacher()
     },
     handleClick(row) {
+      this.title = '修改教师信息'
       this.dialogForm = { ...row }
+      this.imageUrl = this.dialogForm.avatar
       this.dialogVisible = true
-      console.log(row)
     },
     deleteItem(row) {
       this.$confirm('此操作将永久删除【' + row.name + '】的信息吗, 是否继续?', '提示', {
@@ -262,7 +304,7 @@ export default {
       if (res.success) {
         await this.getAllTeacher()
         this.dialogVisible = false
-        this.dialogForm = { gender: '男' }
+        this.resetDialogForm()
         this.$message({
           type: 'success',
           message: '操作成功'
@@ -270,8 +312,13 @@ export default {
       }
     },
     addBtn() {
-      this.dialogForm = { gender: '男' }
+      this.title = '新增教师'
+      this.resetDialogForm()
       this.dialogVisible = true
+    },
+    resetDialogForm() {
+      this.imageUrl = ''
+      this.dialogForm = { gender: '男' }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -282,6 +329,35 @@ export default {
 </script>
 
 <style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.avatar-uploader-icon {
+  border: 1px dashed #d9d9d9;
+}
+.avatar-uploader-icon:hover {
+  border-color: #409EFF;
+}
 el-form-item {
   margin-right: 20px;
 }
