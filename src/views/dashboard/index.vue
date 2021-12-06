@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <div class="dashboard-text">role: {{ role }}</div>
+    <div class="dashboard-text">role: {{ role.split(',') }}</div>
   </div>
 </template>
 
