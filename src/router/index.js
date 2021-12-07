@@ -81,6 +81,27 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/campus',
+    component: Layout,
+    redirect: '/campus/list',
+    name: 'Campus',
+    meta: { title: '校区管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'CampusList',
+        component: () => import('@/views/campus/list'),
+        meta: { title: '校区列表', icon: 'user' }
+      },
+      {
+        path: '/manager-list2',
+        name: 'ManagerList',
+        component: () => import('@/views/campus/list'),
+        meta: { title: '校区别膘儿', icon: 'tree' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
