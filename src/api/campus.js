@@ -6,3 +6,26 @@ export function getCampusList() {
     method: 'get'
   })
 }
+
+export function getCampusListByPage(current, limit, timeRangeStr) {
+  return request({
+    url: `/campus/pageList/${current}/${limit}`,
+    method: 'get',
+    params: timeRangeStr
+  })
+}
+
+export function deleteById(id) {
+  return request({
+    url: `/campus/delete/${id}`,
+    method: 'delete'
+  })
+}
+
+export function save(buildTime, data) {
+  return request({
+    url: `/campus/save/${buildTime}`,
+    method: 'post',
+    data: data
+  })
+}

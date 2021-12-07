@@ -22,3 +22,17 @@ export function save(data) {
     data: data
   })
 }
+
+export function allManagers() {
+  return request({
+    url: `/sysUser/managers`,
+    method: 'get'
+  })
+}
+
+export function avoidManager(manager) {
+  return request({
+    url: `/sysUser/avoidManager/${manager}`,
+    method: 'get'
+  })
+}
