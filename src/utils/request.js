@@ -67,6 +67,8 @@ service.interceptors.response.use(
       } else if (res.code === '28005') {
         router.replace({ path: '/401' })
         return res
+      } else if (res.code === '28000') {
+        Message.error(res.message)
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
