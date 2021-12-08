@@ -108,18 +108,18 @@
           <el-input v-model="dialogForm.name" style="width: 300px" autocomplete="off" />
         </el-form-item>
         <el-form-item label="负责人" label-width="120px">
-          <el-select v-model="dialogForm.manager" placeholder="请选择校区" clearable>
+          <el-select v-model="dialogForm.manager" placeholder="请选择负责人" clearable>
             <el-option v-for="item in avoidManagerList" :key="item.id" :label="item.username" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="建造时间" label-width="120px">
           <div class="block">
             <el-date-picker
-              v-model="buildTime"
+              v-model="dialogForm.buildTime"
               type="date"
               placeholder="选择日期"
               format="yyyy 年 MM 月 dd 日"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
           </div>
         </el-form-item>
@@ -254,8 +254,11 @@ export default {
       })
     },
     async submit() {
-      console.log(this.buildTime)
-      const res = await save(this.buildTime, this.dialogForm)
+      // console.log(this.buildTime)
+      // this.buildTime = this.dialogForm.buildTime
+      // this.dialogForm.buildTime = ''
+      // console.log(this.buildTime)
+      const res = await save(this.dialogForm)
       if (res.success) {
         await this.getAllCampus()
         this.dialogVisible = false

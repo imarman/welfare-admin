@@ -22,9 +22,9 @@ export function deleteById(id) {
   })
 }
 
-export function save(buildTime, data) {
+export function save(data) {
   return request({
-    url: `/campus/save/${buildTime}`,
+    url: `/campus/save`,
     method: 'post',
     data: data
   })
