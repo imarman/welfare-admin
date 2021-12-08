@@ -98,7 +98,74 @@ export const constantRoutes = [
         path: '/manager-list2',
         name: 'ManagerList',
         component: () => import('@/views/campus/list'),
+        hidden: true,
         meta: { title: '校区别膘儿', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/welfare',
+    component: Layout,
+    redirect: '/welfare/list',
+    name: 'Welfare',
+    meta: { title: '福利管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'WelfareList',
+        component: () => import('@/views/welfare/list'),
+        meta: { title: '福利列表', icon: 'user' }
+      },
+      {
+        path: '/list2',
+        name: 'WelfareList2',
+        component: () => import('@/views/welfare/list'),
+        // hidden: true,
+        meta: { title: '福利列表2', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/audit',
+    component: Layout,
+    redirect: '/audit/list',
+    name: 'Audit',
+    meta: { title: '审核列表', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'AuditList',
+        component: () => import('@/views/audit/list'),
+        meta: { title: '审核列表', icon: 'user' }
+      },
+      {
+        path: '/manager-list2',
+        name: 'ManagerList',
+        component: () => import('@/views/campus/list'),
+        // hidden: true,
+        meta: { title: '审核处理', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/list',
+    name: 'User',
+    meta: { title: '用户信息', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'info',
+        name: 'UserInfo',
+        component: () => import('@/views/user/info'),
+        meta: { title: '用户详情', icon: 'user' }
+      },
+      {
+        path: '/change',
+        name: 'UserPwd',
+        component: () => import('@/views/user/pwd'),
+        // hidden: true,
+        meta: { title: '修改密码', icon: 'tree' }
       }
     ]
   },
