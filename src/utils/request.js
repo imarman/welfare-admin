@@ -70,6 +70,7 @@ service.interceptors.response.use(
       } else if (res.code === '28000') {
         Message.error(res.message)
       }
+      Message.error(res.message)
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res

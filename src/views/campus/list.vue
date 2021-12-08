@@ -59,7 +59,7 @@
         >
           <template slot-scope="scope">
             <el-button v-if="scope.row.managerName" size="mini" type="danger" round>{{ scope.row.managerName }}</el-button>
-            <el-button v-if="!scope.row.managerName" size="mini" type="default" round>暂未负责校区</el-button>
+            <el-button v-if="!scope.row.managerName" size="mini" type="default" round>暂未负责人</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -156,7 +156,6 @@ import { allManagers, avoidManager } from '@/api/manager'
 export default {
   data() {
     return {
-      buildTime: '',
       timeRange: [],
       isManager: this.$store.state.user.role.split(',').indexOf('MANAGER' +
         '') !== -1,
@@ -213,7 +212,6 @@ export default {
       }
     },
     search() {
-      console.log(this.queryForm)
       this.queryForm.timeRange = this.timeRange.join(',')
       this.queryForm.current = this.current
       this.queryForm.limit = this.limit
@@ -227,6 +225,7 @@ export default {
       this.title = '修改校区信息'
       this.dialogForm = { ...row }
       this.dialogVisible = true
+      console.log(this.dialogForm)
       this.getAllAvoidManager(this.dialogForm.manager)
     },
     deleteItem(row) {
@@ -254,10 +253,6 @@ export default {
       })
     },
     async submit() {
-      // console.log(this.buildTime)
-      // this.buildTime = this.dialogForm.buildTime
-      // this.dialogForm.buildTime = ''
-      // console.log(this.buildTime)
       const res = await save(this.dialogForm)
       if (res.success) {
         await this.getAllCampus()
