@@ -93,13 +93,6 @@ export const constantRoutes = [
         name: 'CampusList',
         component: () => import('@/views/campus/list'),
         meta: { title: '校区列表', icon: 'user' }
-      },
-      {
-        path: '/manager-list2',
-        name: 'ManagerList',
-        component: () => import('@/views/campus/list'),
-        hidden: true,
-        meta: { title: '校区别膘儿', icon: 'tree' }
       }
     ]
   },
@@ -117,11 +110,11 @@ export const constantRoutes = [
         meta: { title: '福利列表', icon: 'user' }
       },
       {
-        path: '/list2',
-        name: 'WelfareList2',
-        component: () => import('@/views/welfare/list'),
+        path: '/category',
+        name: 'Category',
+        component: () => import('@/views/welfare/category'),
         // hidden: true,
-        meta: { title: '福利列表2', icon: 'tree' }
+        meta: { title: '福利类别管理', icon: 'tree' }
       }
     ]
   },
@@ -140,7 +133,7 @@ export const constantRoutes = [
       },
       {
         path: '/manager-list2',
-        name: 'ManagerList',
+        name: 'ManagerList2',
         component: () => import('@/views/campus/list'),
         // hidden: true,
         meta: { title: '审核处理', icon: 'tree' }
