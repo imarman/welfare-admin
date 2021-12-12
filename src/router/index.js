@@ -130,14 +130,14 @@ export const constantRoutes = [
         name: 'AuditList',
         component: () => import('@/views/audit/list'),
         meta: { title: '审核列表', icon: 'user' }
-      },
-      {
-        path: '/manager-list2',
-        name: 'ManagerList2',
-        component: () => import('@/views/campus/list'),
-        // hidden: true,
-        meta: { title: '审核处理', icon: 'tree' }
       }
+      // {
+      //   path: '/manager-list2',
+      //   name: 'ManagerList2',
+      //   component: () => import('@/views/campus/list'),
+      //   // hidden: true,
+      //   meta: { title: '审核处理', icon: 'tree' }
+      // }
     ]
   },
   {
