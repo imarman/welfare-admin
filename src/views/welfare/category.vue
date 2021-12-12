@@ -9,7 +9,7 @@
         <el-button @click="resetForm('queryForm')">重置</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="success" style="margin-left: 100px" @click="addBtn">新增</el-button>
+        <el-button v-if="isAdmin" type="success" style="margin-left: 100px" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -41,6 +41,7 @@
           width="300"
         />
         <el-table-column
+          v-if="isAdmin"
           label="操作"
           width="140"
         >
@@ -80,7 +81,7 @@ import { getAll, save, deleteById } from '@/api/welfareCategory'
 export default {
   data() {
     return {
-      isManager: this.$store.state.user.role.split(',').indexOf('MANAGER' +
+      isAdmin: this.$store.state.user.role.split(',').indexOf('ADMIN' +
         '') !== -1,
       title: '修改福利类别信息',
       dialogVisible: false,

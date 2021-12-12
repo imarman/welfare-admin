@@ -26,7 +26,7 @@
         <el-button type="primary" @click="search">查询</el-button>
         <el-button @click="resetForm('queryForm')">重置</el-button>
       </el-form-item>
-      <el-form-item>
+      <el-form-item v-if="isAdmin">
         <el-button type="success" style="margin-left: 100px" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
@@ -86,7 +86,7 @@
           label="操作"
           width="140"
         >
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="isAdmin">
             <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
             <el-button type="text" size="mini" @click="deleteItem(scope.row)">删除</el-button>
           </template>
@@ -157,7 +157,7 @@ export default {
   data() {
     return {
       timeRange: [],
-      isManager: this.$store.state.user.role.split(',').indexOf('MANAGER' +
+      isAdmin: this.$store.state.user.role.split(',').indexOf('ADMIN' +
         '') !== -1,
       title: '修改校区信息',
       imageUrl: '',

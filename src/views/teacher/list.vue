@@ -21,7 +21,7 @@
         <el-button @click="resetForm('queryForm')">重置</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="success" style="margin-left: 100px" @click="addBtn">新增</el-button>
+        <el-button v-if="isAdmin" type="success" style="margin-left: 100px" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -98,6 +98,7 @@
           width="200"
         />
         <el-table-column
+          v-if="isAdmin"
           label="操作"
           width="200"
         >
@@ -218,7 +219,7 @@ export default {
   data() {
     return {
       welfareForm: {},
-      isManager: this.$store.state.user.role.split(',').indexOf('MANAGER' +
+      isAdmin: this.$store.state.user.role.split(',').indexOf('ADMIN' +
         '') !== -1,
       title: '修改教师信息',
       imageUrl: '',
@@ -251,10 +252,12 @@ export default {
       const temp = this.welfareList.filter(item => item.id === this.welfareForm.welfareId)
       this.welfareForm.welfareName = temp[0].name
       console.log(this.welfareForm)
+      const that = this
       saveWelfare(this.welfareForm).then(resp => {
         if (resp.success) {
-          this.$message.success(resp.message)
+          that.$message.success(resp.message)
         }
+        that.welfareDialogVisible = false
       })
     },
     openWelfareDialog(row) {

@@ -1,12 +1,5 @@
 import request from '@/utils/request'
 
-// export function getAll() {
-//   return request({
-//     url: `/campus/list`,
-//     method: 'get'
-//   })
-// }
-
 export function getAllApply() {
   return request({
     url: `/apply/all`,
@@ -22,10 +15,10 @@ export function changeStatus(id, status) {
   })
 }
 
-// export function saveWelfare(data) {
-//   return request({
-//     url: `/apply/save`,
-//     method: 'post',
-//     data: data
-//   })
-// }
+export function saveWelfare(data) {
+  return request({
+    url: `/apply/save`,
+    method: 'post',
+    data: data
+  })
+}
