@@ -99,15 +99,38 @@
         />
         <el-table-column
           label="操作"
-          width="140"
+          width="200"
         >
           <template slot-scope="scope">
+            <el-button type="text" size="small" @click="openWelfareDialog(scope.row)">发放福利</el-button>
             <el-button type="text" size="small" @click="handleClick(scope.row)">编辑</el-button>
             <el-button type="text" size="mini" @click="deleteItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+
+    <el-dialog
+      title="申请福利"
+      :visible.sync="welfareDialogVisible"
+      width="30%"
+      center
+    >
+      <el-form :model="welfareForm">
+        <el-form-item label="教师名称" label-width="120px">
+          <el-input v-model="welfareForm.teacherName" disabled style="width: 300px" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="福利选项" label-width="120px">
+          <el-select v-model="welfareForm.welfareId" placeholder="请选择福利" clearable>
+            <el-option v-for="item in welfareList" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="welfareDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sendWelfare">保 存</el-button>
+      </span>
+    </el-dialog>
 
     <el-dialog
       :title="title"
@@ -187,16 +210,20 @@
 <script>
 import { getAll, deleteById, save } from '@/api/teacher'
 import { getCampusList } from '@/api/campus'
+import { allWelfare } from '@/api/welfare'
+import { saveWelfare } from '@/api/applyWelfare'
 
 export default {
   name: 'TeacherList',
   data() {
     return {
+      welfareForm: {},
       isManager: this.$store.state.user.role.split(',').indexOf('MANAGER' +
         '') !== -1,
       title: '修改教师信息',
       imageUrl: '',
       dialogVisible: false,
+      welfareDialogVisible: false,
       hidePage: false,
       current: 1,
       limit: 10,
@@ -209,6 +236,7 @@ export default {
       },
       tableData: [],
       campusList: [],
+      welfareList: [],
       dialogForm: {
         gender: '男'
       }
@@ -219,6 +247,26 @@ export default {
     this.getAllTeacher()
   },
   methods: {
+    sendWelfare() {
+      const temp = this.welfareList.filter(item => item.id === this.welfareForm.welfareId)
+      this.welfareForm.welfareName = temp[0].name
+      console.log(this.welfareForm)
+      saveWelfare(this.welfareForm).then(resp => {
+        if (resp.success) {
+          this.$message.success(resp.message)
+        }
+      })
+    },
+    openWelfareDialog(row) {
+      this.getAllWelfare()
+      this.welfareDialogVisible = true
+      this.welfareForm.teacherName = row.name
+      this.welfareForm.teacherId = row.id
+    },
+    async getAllWelfare() {
+      const res = await allWelfare()
+      this.welfareList = res.data
+    },
     handleSizeChange(val) {
       this.limit = val
       this.getAllTeacher()

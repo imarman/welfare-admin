@@ -8,6 +8,13 @@ export function getWelfareListByPage(current, limit, params) {
   })
 }
 
+export function allWelfare() {
+  return request({
+    url: `/welfare/list`,
+    method: 'get'
+  })
+}
+
 export function deleteById(id) {
   return request({
     url: `/welfare/delete/${id}`,
